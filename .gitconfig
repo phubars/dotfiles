@@ -119,9 +119,9 @@
 	mc = merge --continue
 	ms = merge --skip
 	#############
-	o = checkout
-	om = checkout master
-	ob = checkout -b
+	co = checkout
+	com = checkout master
+	cob = checkout -b
 	#############
 	pr = prune -v
 	#############
