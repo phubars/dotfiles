@@ -42,7 +42,7 @@
 [difftool]
     prompt = false
 [github]
-    user = pksunkara
+    user = phubars
     token = token
 [gitflow "prefix"]
     feature = feature-
