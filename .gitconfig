@@ -50,8 +50,6 @@
     hotfix = hotfix-
     support = support-
     versiontag = v
-[sequence]
-    editor = interactive-rebase-tool
 [alias]
     a = add --all
     ai = add -i
