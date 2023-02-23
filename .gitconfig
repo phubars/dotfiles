@@ -1,7 +1,8 @@
 [user]
     name = Phu Huynh
-    email = phuhuynh333@gmail.com
+    email = phubars@users.noreply.github.com
     username = phubars
+	signingkey = AB978BFBAB925BF2
 [core]
     editor = vim
     whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
@@ -194,6 +195,8 @@
     rmf = rm -f
     rmrf = rm -r -f
     #############
+    rss = restore --staged
+    #############
     s = status
     sb = status -s -b
     #############
@@ -245,3 +248,7 @@
     theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
     subrepo = !sh -c 'git filter-branch --prune-empty --subdirectory-filter $1 master' -
     human = name-rev --name-only --refs=refs/heads/*
+[commit]
+	gpgsign = true
+[gpg]
+	program = gpg
