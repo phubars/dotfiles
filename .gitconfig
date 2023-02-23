@@ -2,7 +2,7 @@
     name = Phu Huynh
     email = phubars@users.noreply.github.com
     username = phubars
-	signingkey = AB978BFBAB925BF2
+    signingkey = AB978BFBAB925BF2
 [core]
     editor = vim
     whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
@@ -249,6 +249,6 @@
     subrepo = !sh -c 'git filter-branch --prune-empty --subdirectory-filter $1 master' -
     human = name-rev --name-only --refs=refs/heads/*
 [commit]
-	gpgsign = true
+    gpgsign = true
 [gpg]
-	program = gpg
+    program = gpg
