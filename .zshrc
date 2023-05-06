@@ -1,3 +1,6 @@
+# Time the load of zsh
+# zmodload zsh/zprof
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -8,7 +11,8 @@ export ZSH="/Users/phuhuynh/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+# ZSH_THEME="random"
+ZSH_THEME="muse"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -63,64 +67,38 @@ ZSH_THEME="robbyrussell"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git colorize)
-
-source $ZSH/oh-my-zsh.sh
-
-export GPG_TTY=$(tty)
-
-# Autojump
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-# User configuration
-
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-export EDITOR='vim'
-alias vim='mvim -v'
-
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
+# Which plugins would you like to load?
+# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+export NVM_LAZY_LOAD=true
 
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+plugins=(git colorize zsh-nvm)
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+source $ZSH/oh-my-zsh.sh
 
-# set terraform role for bastion account
-export TERRAFORM_EXEC_ROLE=Operations
-export TF_VAR_terraform_exec_role=Operations
+export GPG_TTY=$(tty)
 
-# export TERRAFORM_EXEC_ROLE=PowerUser
-# export TF_VAR_terraform_exec_role=PowerUser
+autoload -U compinit && compinit -u
 
-# export TERRAFORM_EXEC_ROLE=Administrator
-# export TF_VAR_terraform_exec_role=Administrator
+##### KEY BINDINGS #####
+bindkey '^h' kill-word
+bindkey '^w' backward-kill-word
+bindkey '^f' forward-word
+bindkey '^b' backward-word
 
-# set go path
-export PATH=$PATH:$(go env GOPATH)/bin
-
+##### ALIASES ######
+alias vim='nvim'
+alias vi='nvim'
 # set npm token
 # .zshrc or .zshenv or .bashrc
 npm-token() {
@@ -128,24 +106,19 @@ npm-token() {
 }
 export NPM_TOKEN="$(npm-token)"
 
-# java env
-export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
-
-# python env
-export PATH="/usr/local/opt/python/libexec/bin:$PATH"
-
-# ruby
-export PATH="/usr/local/opt/ruby/bin:$PATH"
-
 # jwts
 function jwt-decode() {
   sed 's/\./\n/g' <<< $(cut -d. -f1,2 <<< $1) | base64 --decode | jq
 }
 
-# hs-ops-tools
-export PATH=$PATH:$(python -c 'import site; print(site.USER_BASE + "/bin")')
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+alias f="fd --type f --hidden --exclude .git | fzf --preview 'bat -n --color=always {}' --bind 'ctrl-/:change-preview-window(down|hidden|)' --bind 'enter:become(nvim {})'"
+
+# Autojump
+[[ -s /Users/phuhuynh/.autojump/etc/profile.d/autojump.sh ]] && source /Users/phuhuynh/.autojump/etc/profile.d/autojump.sh
+
+##### CHANGE DIRECTORY HOOKS #####
 # color output
 red=`tput setaf 1`
 green=`tput setaf 2`
@@ -153,42 +126,46 @@ blue=`tput setaf 4`
 yellow=`tput setaf 3`
 reset=`tput sgr0`
 
-##### CHANGE DIRECTORY HOOKS #####
 autoload -U add-zsh-hook
-# set node version
+
+# set terraform version
+nvm_find_nvmrc_file() {
+  local version="$(pwd)/.nvmrc"
+  if [ -e $version ]; then
+    head -n1 $version
+  fi
+}
+
 load-nvmrc() {
-  local node_version="$(nvm version)"
-  local nvmrc_path="$(nvm_find_nvmrc)"
+  local node_version_file=$(nvm_find_nvmrc_file)
+  if [ ! -z $node_version_file ]; then
+    # lazy load requires running "nvm" in current shell 
+    echo -n "nvm version: "
+    nvm --version
+    local node_version="$(nvm version)"
+    local nvmrc_path="$(nvm_find_nvmrc)"
 
-  if [ -n "$nvmrc_path" ]; then
-    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+    if [ -n "$nvmrc_path" ]; then
+      local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
 
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$node_version" ]; then
-      nvm use
+      if [ "$nvmrc_node_version" = "N/A" ]; then
+        nvm install
+      elif [ "$nvmrc_node_version" != "$node_version" ]; then
+        nvm use
+      fi
+    elif [ "$node_version" != "$(nvm version default)" ]; then
+      echo "Reverting to nvm default version"
+      nvm use default
     fi
-  elif [ "$node_version" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
   fi
 }
-# set personal AWS_PROFILE
-load-personal-aws() {
-  local personal_profile='personal'
-  local workspace_dir='personal_workspace'
-  local cur_dir=$(pwd)
 
-  if [[ $cur_dir =~ .*$workspace_dir.* && $AWS_PROFILE != $personal_profile ]]; then
-    echo "${yellow}setting AWS_PROFILE=$personal_profile${reset}"
-    export AWS_PROFILE=$personal_profile
-  elif [[ ! $cur_dir =~ .*$workspace_dir.* && ! -z $AWS_PROFILE ]]; then
-    echo "${yellow}unsetting AWS_PROFILE${reset}"
-    unset AWS_PROFILE
-  else
-    # do nothing
-  fi
-}
+# Setting NVM home directory
+export NVM_DIR=/Users/phuhuynh/.nvm
+# Source NVM configuration scripts
+# . /opt/homebrew/opt/nvm/nvm.sh
+# . /opt/homebrew/opt/nvm/etc/bash_completion.d/nvm
+
 
 # set terraform version
 tfenv_find_terraform_version() {
@@ -205,7 +182,6 @@ load-terraform-version() {
   fi
 }
 
-
 # load venv
 load-venv() {
   local green=`tput setaf 2`
@@ -221,19 +197,14 @@ load-venv() {
   fi
 }
 
-add-zsh-hook chpwd load-venv
-add-zsh-hook chpwd load-nvmrc
 # add-zsh-hook chpwd load-personal-aws
 add-zsh-hook chpwd load-terraform-version
+add-zsh-hook chpwd load-venv
+add-zsh-hook chpwd load-nvmrc
 
-load-nvmrc
-load-personal-aws
+source ~/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+##### MUST BE SOURCE AT END OF .zhsrc  #####
 
-#key bindings
-bindkey '^h' kill-word
-bindkey '^w' backward-kill-word
-bindkey '^f' forward-word
-bindkey '^b' backward-word
-
-
-export TF_VAR_pagerduty_user_token="u+fknQd1Dsfm8VoLHAZQ"
+# End time the load of zsh
+# zprof
