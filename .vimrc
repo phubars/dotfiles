@@ -32,7 +32,7 @@ set autoread
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
-let mapleader = ","
+let mapleader = " "
 
 " Fast saving
 nmap <leader>w :w!<cr>
@@ -116,6 +116,8 @@ endif
 " Add a bit extra margin to the left
 set foldcolumn=1
 
+" Set number
+set number
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -129,6 +131,7 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 try
+    set termguicolors
     colorscheme desert
 catch
 endtry
@@ -372,6 +375,4 @@ function! VisualSelection(direction, extra_filter) range
 endfunction
 
 autocmd FileType javascript setlocal ts=2 sts=2 sw=2
-autocmd BufRead,BufNewFile *.hcl set filetype=terraform
 
-execute pathogen#infect()
