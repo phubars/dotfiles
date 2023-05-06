@@ -2,17 +2,11 @@
     name = Phu Huynh
     email = phubars@users.noreply.github.com
     username = phubars
-    signingkey = AB978BFBAB925BF2
+    signingkey = 144DC287746BE1BC
 [core]
-    editor = vim
+    editor = nvim
     whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
     excludesfile = ~/.gitignore
-[sendemail]
-    smtpencryption = tls
-    smtpserver = smtp.gmail.com
-    smtpuser = phuhuynh333@gmail.com 
-    smtppass = password
-    smtpserverport = 587
 [web]
     browser = google-chrome
 [instaweb]
@@ -196,6 +190,7 @@
     rmrf = rm -r -f
     #############
     rss = restore --staged
+    rs = restore
     #############
     s = status
     sb = status -s -b
@@ -216,6 +211,9 @@
     w = show
     wp = show -p
     wr = show -p --no-color
+    #############
+    wta = worktree add
+    wtr = worktree remove
     #############
     svnr = svn rebase
     svnd = svn dcommit
