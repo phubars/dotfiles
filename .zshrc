@@ -105,10 +105,10 @@ alias vim='nvim'
 alias vi='nvim'
 # set npm token
 # .zshrc or .zshenv or .bashrc
-npm-token() {
-	echo `awk -F\= '{gsub(/"/,"",$2);print $2}' ~/.npmrc`
-}
-export NPM_TOKEN="$(npm-token)"
+#npm-token() {
+#	echo `awk -F\= '{gsub(/"/,"",$2);print $2}' ~/.npmrc`
+#}
+#export NPM_TOKEN="$(npm-token)"
 
 # jwts
 function jwt-decode() {
@@ -199,13 +199,13 @@ add-zsh-hook chpwd load-terraform-version
 add-zsh-hook chpwd load-venv
 add-zsh-hook chpwd load-nvmrc
 
-source ~/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
+source ~/.zsh/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # Autojump
-[[ -s /Users/phuhuynh/.autojump/etc/profile.d/autojump.sh ]] && source /Users/phuhuynh/.autojump/etc/profile.d/autojump.sh
+# [[ -s /Users/phuhuynh/.autojump/etc/profile.d/autojump.sh ]] && source /Users/phuhuynh/.autojump/etc/profile.d/autojump.sh
 
 #sdk man
 source "$HOME/.sdkman/bin/sdkman-init.sh"

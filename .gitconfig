@@ -2,7 +2,7 @@
     name = Phu Huynh
     email = phubars@users.noreply.github.com
     username = phubars
-    signingkey = 144DC287746BE1BC
+    signingkey = 2C343D86C6A52E34
 [core]
     editor = nvim
     whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
