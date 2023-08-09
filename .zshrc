@@ -12,7 +12,10 @@ export ZSH="/Users/phuhuynh/.oh-my-zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 # ZSH_THEME="random"
-ZSH_THEME="muse"
+# ZSH_THEME="muse"
+# ZSH_THEME="af-magic"
+# ZSH_THEME="agnoster"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -22,6 +25,7 @@ ZSH_THEME="muse"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
+#
 
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
@@ -111,13 +115,6 @@ function jwt-decode() {
   sed 's/\./\n/g' <<< $(cut -d. -f1,2 <<< $1) | base64 --decode | jq
 }
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-alias f="fd --type f --hidden --exclude .git | fzf --preview 'bat -n --color=always {}' --bind 'ctrl-/:change-preview-window(down|hidden|)' --bind 'enter:become(nvim {})'"
-
-# Autojump
-[[ -s /Users/phuhuynh/.autojump/etc/profile.d/autojump.sh ]] && source /Users/phuhuynh/.autojump/etc/profile.d/autojump.sh
-
 ##### CHANGE DIRECTORY HOOKS #####
 # color output
 red=`tput setaf 1`
@@ -139,7 +136,7 @@ nvm_find_nvmrc_file() {
 load-nvmrc() {
   local node_version_file=$(nvm_find_nvmrc_file)
   if [ ! -z $node_version_file ]; then
-    # lazy load requires running "nvm" in current shell 
+    # lazy load requires running "nvm" in current shell
     echo -n "nvm version: "
     nvm --version
     local node_version="$(nvm version)"
@@ -204,6 +201,14 @@ add-zsh-hook chpwd load-nvmrc
 
 source ~/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Autojump
+[[ -s /Users/phuhuynh/.autojump/etc/profile.d/autojump.sh ]] && source /Users/phuhuynh/.autojump/etc/profile.d/autojump.sh
+
+#sdk man
+source "$HOME/.sdkman/bin/sdkman-init.sh"
 ##### MUST BE SOURCE AT END OF .zhsrc  #####
 
 # End time the load of zsh
