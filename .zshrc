@@ -2,7 +2,7 @@
 # zmodload zsh/zprof
 
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/opt/homebrew/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/phuhuynh/.oh-my-zsh"
@@ -86,7 +86,8 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 export NVM_LAZY_LOAD=true
 
-plugins=(git colorize zsh-nvm)
+plugins=(git colorize)
+# plugins=(git colorize zsh-nvm)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -125,37 +126,36 @@ reset=`tput sgr0`
 
 autoload -U add-zsh-hook
 
-# set terraform version
-nvm_find_nvmrc_file() {
-  local version="$(pwd)/.nvmrc"
-  if [ -e $version ]; then
-    head -n1 $version
-  fi
-}
-
-load-nvmrc() {
-  local node_version_file=$(nvm_find_nvmrc_file)
-  if [ ! -z $node_version_file ]; then
-    # lazy load requires running "nvm" in current shell
-    echo -n "nvm version: "
-    nvm --version
-    local node_version="$(nvm version)"
-    local nvmrc_path="$(nvm_find_nvmrc)"
-
-    if [ -n "$nvmrc_path" ]; then
-      local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-      if [ "$nvmrc_node_version" = "N/A" ]; then
-        nvm install
-      elif [ "$nvmrc_node_version" != "$node_version" ]; then
-        nvm use
-      fi
-    elif [ "$node_version" != "$(nvm version default)" ]; then
-      echo "Reverting to nvm default version"
-      nvm use default
-    fi
-  fi
-}
+#nvm_find_nvmrc_file() {
+#  local version="$(pwd)/.nvmrc"
+#  if [ -e $version ]; then
+#    head -n1 $version
+#  fi
+#}
+#
+#load-nvmrc() {
+#  local node_version_file=$(nvm_find_nvmrc_file)
+#  if [ ! -z $node_version_file ]; then
+#    # lazy load requires running "nvm" in current shell
+#    echo -n "nvm version: "
+#    nvm --version
+#    local node_version="$(nvm version)"
+#    local nvmrc_path="$(nvm_find_nvmrc)"
+#
+#    if [ -n "$nvmrc_path" ]; then
+#      local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+#
+#      if [ "$nvmrc_node_version" = "N/A" ]; then
+#        nvm install
+#      elif [ "$nvmrc_node_version" != "$node_version" ]; then
+#        nvm use
+#      fi
+#    elif [ "$node_version" != "$(nvm version default)" ]; then
+#      echo "Reverting to nvm default version"
+#      nvm use default
+#    fi
+#  fi
+#}
 
 # Setting NVM home directory
 export NVM_DIR=/Users/phuhuynh/.nvm
@@ -197,7 +197,7 @@ load-venv() {
 # add-zsh-hook chpwd load-personal-aws
 add-zsh-hook chpwd load-terraform-version
 add-zsh-hook chpwd load-venv
-add-zsh-hook chpwd load-nvmrc
+# add-zsh-hook chpwd load-nvmrc
 
 source ~/.zsh/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -208,7 +208,7 @@ source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # [[ -s /Users/phuhuynh/.autojump/etc/profile.d/autojump.sh ]] && source /Users/phuhuynh/.autojump/etc/profile.d/autojump.sh
 
 #sdk man
-source "$HOME/.sdkman/bin/sdkman-init.sh"
+# source "$HOME/.sdkman/bin/sdkman-init.sh"
 ##### MUST BE SOURCE AT END OF .zhsrc  #####
 
 # End time the load of zsh
