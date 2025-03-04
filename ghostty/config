@@ -1,0 +1,8 @@
+theme = catppuccin-mocha
+font-size = 19
+font-family = Hack Nerd Font Mono
+mouse-hide-while-typing = true
+background-opacity = 0.9
+background-blur-radius = 20
+
+keybind = global:ctrl+grave_accent=toggle_quick_terminal
